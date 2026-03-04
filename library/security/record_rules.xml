@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Lector: solo ve préstamos donde él es el socio -->
+    <record id="rule_prestamo_reader" model="ir.rule">
+        <field name="name">Préstamos: solo mis préstamos (Lector)</field>
+        <field name="model_id" ref="model_library_prestamo"/>
+        <field name="groups" eval="[(4, ref('library_group_reader'))]"/>
+        <field name="domain_force">[('socio_id', '=', user.partner_id.id)]</field>
+    </record>
+
+    <!-- Usuario: ve todos los préstamos (staff de biblioteca) -->
+    <record id="rule_prestamo_user" model="ir.rule">
+        <field name="name">Préstamos: todos (Usuario)</field>
+        <field name="model_id" ref="model_library_prestamo"/>
+        <field name="groups" eval="[(4, ref('library_group_user'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+</odoo>

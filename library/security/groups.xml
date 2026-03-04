@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- 1. Solo lectura: 1,0,0,0 -->
+    <record id="library_group_reader" model="res.groups">
+        <field name="name">Lector de Biblioteca</field>
+        <field name="category_id" ref="base.module_category_services_library"/>
+    </record>
+
+    <!-- 2. Usuario normal: 1,1,1,0 (hereda de lector) -->
+    <record id="library_group_user" model="res.groups">
+        <field name="name">Usuario de Biblioteca</field>
+        <field name="category_id" ref="base.module_category_services_library"/>
+        <field name="implied_ids" eval="[(4, ref('library_group_reader'))]"/>
+    </record>
+
+    <!-- 3. Super usuario: 1,1,1,1 (hereda de usuario) -->
+    <record id="library_group_admin" model="res.groups">
+        <field name="name">Administrador de Biblioteca</field>
+        <field name="category_id" ref="base.module_category_services_library"/>
+        <field name="implied_ids" eval="[(4, ref('library_group_user'))]"/>
+    </record>
+
+</odoo>

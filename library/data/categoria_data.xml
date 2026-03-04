@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="categoria_ficcion" model="library.categoria">
+            <field name="name">Ficción</field>
+            <field name="description">Novelas, cuentos y literatura de ficción</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="categoria_no_ficcion" model="library.categoria">
+            <field name="name">No Ficción</field>
+            <field name="description">Ensayos, biografías y documentales</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="categoria_ciencia" model="library.categoria">
+            <field name="name">Ciencia</field>
+            <field name="description">Libros de ciencia y divulgación científica</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="categoria_tecnologia" model="library.categoria">
+            <field name="name">Tecnología</field>
+            <field name="description">Informática, programación y tecnología</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="categoria_historia" model="library.categoria">
+            <field name="name">Historia</field>
+            <field name="description">Libros de historia y civilizaciones</field>
+            <field name="color">5</field>
+        </record>
+
+        <record id="categoria_infantil" model="library.categoria">
+            <field name="name">Infantil</field>
+            <field name="description">Literatura infantil y juvenil</field>
+            <field name="color">6</field>
+        </record>
+
+        <record id="categoria_arte" model="library.categoria">
+            <field name="name">Arte</field>
+            <field name="description">Arte, música y cultura</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="categoria_filosofia" model="library.categoria">
+            <field name="name">Filosofía</field>
+            <field name="description">Filosofía, ética y pensamiento</field>
+            <field name="color">8</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form View -->
+    <record id="library_autor_view_form" model="ir.ui.view">
+        <field name="name">library.autor.form</field>
+        <field name="model">library.autor</field>
+        <field name="arch" type="xml">
+            <form string="Autor">
+                <sheet>
+                    <field name="foto" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre del autor"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="fecha_nacimiento"/>
+                            <field name="nacionalidad"/>
+                        </group>
+                        <group>
+                            <field name="email" widget="email"/>
+                            <field name="website" widget="url"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Biografía" name="biografia">
+                            <field name="biografia" placeholder="Biografía del autor..."/>
+                        </page>
+                        <page string="Libros" name="libros">
+                            <field name="libro_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="isbn"/>
+                                    <field name="categoria_id"/>
+                                    <field name="estado" widget="badge"
+                                           decoration-success="estado == 'disponible'"
+                                           decoration-warning="estado == 'prestado'"
+                                           decoration-danger="estado == 'no_disponible'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="library_autor_view_list" model="ir.ui.view">
+        <field name="name">library.autor.list</field>
+        <field name="model">library.autor</field>
+        <field name="arch" type="xml">
+            <list string="Autores">
+                <field name="name"/>
+                <field name="nacionalidad"/>
+                <field name="email"/>
+                <field name="libro_count" string="Libros"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="library_autor_view_search" model="ir.ui.view">
+        <field name="name">library.autor.search</field>
+        <field name="model">library.autor</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Autores">
+                <field name="name"/>
+                <field name="nacionalidad"/>
+                <field name="email"/>
+                <separator/>
+                <filter name="archivados" string="Archivados"
+                        domain="[('active', '=', False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_nacionalidad" string="Nacionalidad"
+                            context="{'group_by': 'nacionalidad'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="library_autor_action" model="ir.actions.act_window">
+        <field name="name">Autores</field>
+        <field name="res_model">library.autor</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="library_autor_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Añade tu primer autor
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main Menu -->
+    <menuitem id="library_menu_root"
+              name="Biblioteca"
+              sequence="10"
+              web_icon="library,static/description/icon.png"/>
+
+    <!-- Catálogo -->
+    <menuitem id="library_menu_catalogo"
+              name="Catálogo"
+              parent="library_menu_root"
+              sequence="10"/>
+
+    <menuitem id="library_menu_libros"
+              name="Libros"
+              parent="library_menu_catalogo"
+              action="library_libro_action"
+              sequence="10"/>
+
+    <menuitem id="library_menu_autores"
+              name="Autores"
+              parent="library_menu_catalogo"
+              action="library_autor_action"
+              sequence="20"/>
+
+    <menuitem id="library_menu_categorias"
+              name="Categorías"
+              parent="library_menu_catalogo"
+              action="library_categoria_action"
+              sequence="30"/>
+
+    <!-- Circulación -->
+    <menuitem id="library_menu_circulacion"
+              name="Circulación"
+              parent="library_menu_root"
+              sequence="20"/>
+
+    <menuitem id="library_menu_prestamos"
+              name="Préstamos"
+              parent="library_menu_circulacion"
+              action="library_prestamo_action"
+              sequence="10"/>
+
+    <!-- Configuración -->
+    <menuitem id="library_menu_configuracion"
+              name="Configuración"
+              parent="library_menu_root"
+              sequence="30"/>
+
+    <menuitem id="library_menu_etiquetas"
+              name="Etiquetas"
+              parent="library_menu_configuracion"
+              action="library_etiqueta_action"
+              sequence="10"/>
+
+</odoo>

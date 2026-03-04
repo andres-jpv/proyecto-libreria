@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vista formulario del wizard (modal) -->
+    <record id="view_prestamo_renovacion_wizard_form" model="ir.ui.view">
+        <field name="name">library.prestamo.renovacion.wizard.form</field>
+        <field name="model">library.prestamo.renovacion.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Renovar Préstamos">
+                <group>
+                    <field name="dias_extension"/>
+                    <field name="prestamo_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button name="action_renovar" type="object"
+                            string="Renovar" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción que abre el wizard como ventana modal -->
+    <record id="action_prestamo_renovacion_wizard" model="ir.actions.act_window">
+        <field name="name">Renovar Préstamos</field>
+        <field name="res_model">library.prestamo.renovacion.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <!-- Aparece en el menú Acción cuando se seleccionan préstamos en la lista -->
+        <field name="binding_model_id" ref="model_library_prestamo"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+</odoo>

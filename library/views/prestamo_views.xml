@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Sequence -->
+    <record id="sequence_library_prestamo" model="ir.sequence">
+        <field name="name">Préstamo de Biblioteca</field>
+        <field name="code">library.prestamo</field>
+        <field name="prefix">PREST/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Form View -->
+    <record id="library_prestamo_view_form" model="ir.ui.view">
+        <field name="name">library.prestamo.form</field>
+        <field name="model">library.prestamo</field>
+        <field name="arch" type="xml">
+            <form string="Préstamo">
+                <field name="is_reader" invisible="1"/>
+                <header>
+                    <button name="action_prestar" type="object"
+                            string="Confirmar Préstamo" class="btn-primary"
+                            invisible="estado != 'borrador' or is_reader"/>
+                    <button name="action_devolver" type="object"
+                            string="Registrar Devolución" class="btn-primary"
+                            invisible="estado not in ('prestado', 'vencido') or is_reader"/>
+                    <button name="action_borrador" type="object"
+                            string="Volver a Borrador" class="btn-secondary"
+                            invisible="estado != 'devuelto' or is_reader"/>
+                    <field name="estado" widget="statusbar"
+                           statusbar_visible="borrador,prestado,devuelto"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="libro_id"
+                                   readonly="estado != 'borrador' or is_reader"/>
+                            <field name="autor_id"/>
+                            <field name="socio_id"
+                                   readonly="estado != 'borrador' or is_reader"/>
+                        </group>
+                        <group>
+                            <field name="fecha_prestamo"
+                                   readonly="estado != 'borrador' or is_reader"/>
+                            <field name="fecha_devolucion_prevista"
+                                   readonly="estado == 'devuelto' or is_reader"/>
+                            <field name="fecha_devolucion_real"
+                                   invisible="estado not in ('devuelto',)"/>
+                            <field name="dias_retraso"
+                                   invisible="estado != 'vencido'"
+                                   decoration-danger="dias_retraso > 0"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notas" name="notas">
+                            <field name="notas" readonly="is_reader"
+                                   placeholder="Notas adicionales..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="library_prestamo_view_list" model="ir.ui.view">
+        <field name="name">library.prestamo.list</field>
+        <field name="model">library.prestamo</field>
+        <field name="arch" type="xml">
+            <list string="Préstamos"
+                  decoration-danger="estado == 'vencido'"
+                  decoration-success="estado == 'devuelto'">
+                <field name="name"/>
+                <field name="libro_id"/>
+                <field name="autor_id"/>
+                <field name="socio_id"/>
+                <field name="fecha_prestamo"/>
+                <field name="fecha_devolucion_prevista"/>
+                <field name="fecha_devolucion_real" optional="hide"/>
+                <field name="dias_retraso"/>
+                <field name="estado" widget="badge"
+                       decoration-info="estado == 'borrador'"
+                       decoration-success="estado == 'devuelto'"
+                       decoration-warning="estado == 'prestado'"
+                       decoration-danger="estado == 'vencido'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="library_prestamo_view_search" model="ir.ui.view">
+        <field name="name">library.prestamo.search</field>
+        <field name="model">library.prestamo</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Préstamos">
+                <field name="name"/>
+                <field name="libro_id"/>
+                <field name="socio_id"/>
+                <separator/>
+                <filter name="borrador" string="Borrador"
+                        domain="[('estado', '=', 'borrador')]"/>
+                <filter name="prestados" string="Prestados"
+                        domain="[('estado', '=', 'prestado')]"/>
+                <filter name="vencidos" string="Vencidos"
+                        domain="[('estado', '=', 'vencido')]"/>
+                <filter name="devueltos" string="Devueltos"
+                        domain="[('estado', '=', 'devuelto')]"/>
+                <separator/>
+                <filter name="hoy" string="Préstamos de Hoy"
+                        domain="[('fecha_prestamo', '=', context_today().strftime('%%Y-%%m-%%d'))]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_libro" string="Libro"
+                            context="{'group_by': 'libro_id'}"/>
+                    <filter name="group_socio" string="Socio"
+                            context="{'group_by': 'socio_id'}"/>
+                    <filter name="group_estado" string="Estado"
+                            context="{'group_by': 'estado'}"/>
+                    <filter name="group_fecha" string="Fecha de Préstamo"
+                            context="{'group_by': 'fecha_prestamo:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="library_prestamo_action" model="ir.actions.act_window">
+        <field name="name">Préstamos</field>
+        <field name="res_model">library.prestamo</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="library_prestamo_view_search"/>
+        <field name="context">{'search_default_prestados': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Registra tu primer préstamo
+            </p>
+            <p>
+                Gestiona los préstamos de libros a los socios de la biblioteca.
+            </p>
+        </field>
+    </record>
+
+</odoo>

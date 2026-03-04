@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form View -->
+    <record id="library_categoria_view_form" model="ir.ui.view">
+        <field name="name">library.categoria.form</field>
+        <field name="model">library.categoria</field>
+        <field name="arch" type="xml">
+            <form string="Categoría">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre de la categoría"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="description"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                    <notebook>
+                        <page string="Libros" name="libros">
+                            <field name="libro_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="autor_id"/>
+                                    <field name="isbn"/>
+                                    <field name="estado" widget="badge"
+                                           decoration-success="estado == 'disponible'"
+                                           decoration-warning="estado == 'prestado'"
+                                           decoration-danger="estado == 'no_disponible'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="library_categoria_view_list" model="ir.ui.view">
+        <field name="name">library.categoria.list</field>
+        <field name="model">library.categoria</field>
+        <field name="arch" type="xml">
+            <list string="Categorías">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="libro_count" string="Libros"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="library_categoria_action" model="ir.actions.act_window">
+        <field name="name">Categorías</field>
+        <field name="res_model">library.categoria</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primera categoría
+            </p>
+        </field>
+    </record>
+
+</odoo>

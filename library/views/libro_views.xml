@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form View -->
+    <record id="library_libro_view_form" model="ir.ui.view">
+        <field name="name">library.libro.form</field>
+        <field name="model">library.libro</field>
+        <field name="arch" type="xml">
+            <form string="Libro">
+                <sheet>
+                    <field name="portada" widget="image" class="oe_avatar"
+                           options="{'preview_image': 'portada'}"
+                           groups="library.library_group_admin"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Título del libro"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="isbn"/>
+                            <field name="autor_id"/>
+                            <field name="categoria_id"/>
+                            <field name="etiqueta_ids" widget="many2many_tags"
+                                   options="{'color_field': 'color'}"/>
+                            <field name="editorial"/>
+                        </group>
+                        <group>
+                            <field name="fecha_publicacion"/>
+                            <field name="num_paginas"/>
+                            <field name="idioma"/>
+                            <field name="precio" widget="monetary"
+                                   options="{'currency_id': 'company_currency_id'}"
+                                   groups="library.library_group_admin"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="cantidad_total"/>
+                            <field name="cantidad_disponible"/>
+                            <field name="estado" widget="badge"
+                                   decoration-success="estado == 'disponible'"
+                                   decoration-warning="estado == 'prestado'"
+                                   decoration-danger="estado == 'no_disponible'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Descripción" name="descripcion">
+                            <field name="descripcion" placeholder="Descripción del libro..."/>
+                        </page>
+                        <page string="Préstamos" name="prestamos">
+                            <field name="prestamo_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="socio_id"/>
+                                    <field name="fecha_prestamo"/>
+                                    <field name="fecha_devolucion_prevista"/>
+                                    <field name="estado" widget="badge"
+                                           decoration-info="estado == 'borrador'"
+                                           decoration-success="estado == 'devuelto'"
+                                           decoration-warning="estado == 'prestado'"
+                                           decoration-danger="estado == 'vencido'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="library_libro_view_list" model="ir.ui.view">
+        <field name="name">library.libro.list</field>
+        <field name="model">library.libro</field>
+        <field name="arch" type="xml">
+            <list string="Libros"
+                  decoration-danger="estado == 'no_disponible'"
+                  decoration-warning="estado == 'prestado'">
+                <field name="name"/>
+                <field name="isbn"/>
+                <field name="autor_id"/>
+                <field name="categoria_id"/>
+                <field name="etiqueta_ids" widget="many2many_tags"
+                       options="{'color_field': 'color'}"/>
+                <field name="editorial"/>
+                <field name="cantidad_disponible"/>
+                <field name="cantidad_total"/>
+                <field name="estado" widget="badge"
+                       decoration-success="estado == 'disponible'"
+                       decoration-warning="estado == 'prestado'"
+                       decoration-danger="estado == 'no_disponible'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="library_libro_view_kanban" model="ir.ui.view">
+        <field name="name">library.libro.kanban</field>
+        <field name="model">library.libro</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card">
+                        <aside>
+                            <field name="portada" widget="image" options="{'preview_image': 'portada'}"
+                            groups="library.library_group_admin"
+                            />
+                        </aside>
+                        <main>
+                            <field name="name" class="fw-bolder fs-5"/>
+                            <field name="autor_id"/>
+                            <field name="categoria_id" widget="badge" decoration-info="1"/>
+                            <div class="d-flex justify-content-between">
+                                <field name="estado" widget="badge"
+                                       decoration-success="estado == 'disponible'"
+                                       decoration-warning="estado == 'prestado'"
+                                       decoration-danger="estado == 'no_disponible'"/>
+                                <span>
+                                    Disp: <field name="cantidad_disponible"/>/<field name="cantidad_total"/>
+                                </span>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="library_libro_view_search" model="ir.ui.view">
+        <field name="name">library.libro.search</field>
+        <field name="model">library.libro</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Libros">
+                <field name="name" string="Título"/>
+                <field name="isbn"/>
+                <field name="autor_id"/>
+                <field name="categoria_id"/>
+                <field name="editorial"/>
+                <field name="etiqueta_ids"/>
+                <separator/>
+                <filter name="disponibles" string="Disponibles"
+                        domain="[('estado', '=', 'disponible')]"/>
+                <filter name="prestados" string="Prestados"
+                        domain="[('estado', '=', 'prestado')]"/>
+                <filter name="no_disponibles" string="No Disponibles"
+                        domain="[('estado', '=', 'no_disponible')]"/>
+                <separator/>
+                <filter name="archivados" string="Archivados"
+                        domain="[('active', '=', False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_autor" string="Autor"
+                            context="{'group_by': 'autor_id'}"/>
+                    <filter name="group_categoria" string="Categoría"
+                            context="{'group_by': 'categoria_id'}"/>
+                    <filter name="group_idioma" string="Idioma"
+                            context="{'group_by': 'idioma'}"/>
+                    <filter name="group_estado" string="Estado"
+                            context="{'group_by': 'estado'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="library_libro_action" model="ir.actions.act_window">
+        <field name="name">Libros</field>
+        <field name="res_model">library.libro</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="library_libro_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Añade tu primer libro
+            </p>
+            <p>
+                Gestiona el catálogo de libros de tu biblioteca.
+            </p>
+        </field>
+    </record>
+
+</odoo>
