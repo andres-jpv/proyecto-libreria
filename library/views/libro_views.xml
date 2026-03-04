@@ -30,7 +30,6 @@
                             <field name="num_paginas"/>
                             <field name="idioma"/>
                             <field name="precio" widget="monetary"
-                                   options="{'currency_id': 'company_currency_id'}"
                                    groups="library.library_group_admin"/>
                         </group>
                     </group>
@@ -150,7 +149,7 @@
                 <separator/>
                 <filter name="archivados" string="Archivados"
                         domain="[('active', '=', False)]"/>
-                <group expand="0" string="Agrupar por">
+                <group>
                     <filter name="group_autor" string="Autor"
                             context="{'group_by': 'autor_id'}"/>
                     <filter name="group_categoria" string="Categoría"

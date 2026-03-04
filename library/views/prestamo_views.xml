@@ -114,7 +114,7 @@
                 <separator/>
                 <filter name="hoy" string="Préstamos de Hoy"
                         domain="[('fecha_prestamo', '=', context_today().strftime('%%Y-%%m-%%d'))]"/>
-                <group expand="0" string="Agrupar por">
+                <group>
                     <filter name="group_libro" string="Libro"
                             context="{'group_by': 'libro_id'}"/>
                     <filter name="group_socio" string="Socio"

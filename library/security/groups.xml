@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!-- Privilege (new Odoo 19 pattern replacing category_id on res.groups) -->
+    <record model="res.groups.privilege" id="library_privilege">
+        <field name="name">Library</field>
+        <field name="sequence">10</field>
+        <field name="placeholder">Sin acceso</field>
+        <field name="category_id" ref="base.module_category_services_library"/>
+    </record>
+
     <!-- 1. Solo lectura: 1,0,0,0 -->
     <record id="library_group_reader" model="res.groups">
         <field name="name">Lector de Biblioteca</field>
-        <field name="category_id" ref="base.module_category_services_library"/>
+        <field name="privilege_id" ref="library_privilege"/>
+        <field name="sequence">10</field>
     </record>
 
     <!-- 2. Usuario normal: 1,1,1,0 (hereda de lector) -->
     <record id="library_group_user" model="res.groups">
         <field name="name">Usuario de Biblioteca</field>
-        <field name="category_id" ref="base.module_category_services_library"/>
+        <field name="privilege_id" ref="library_privilege"/>
+        <field name="sequence">20</field>
         <field name="implied_ids" eval="[(4, ref('library_group_reader'))]"/>
     </record>
 
-    <!-- 3. Super usuario: 1,1,1,1 (hereda de usuario) -->
+    <!-- 3. Super usuario: 1,1,1,1 (hereda de usuario, auto-asigna al admin) -->
     <record id="library_group_admin" model="res.groups">
         <field name="name">Administrador de Biblioteca</field>
-        <field name="category_id" ref="base.module_category_services_library"/>
+        <field name="privilege_id" ref="library_privilege"/>
+        <field name="sequence">30</field>
         <field name="implied_ids" eval="[(4, ref('library_group_user'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
 
 </odoo>

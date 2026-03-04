@@ -5,6 +5,7 @@
     <menuitem id="library_menu_root"
               name="Biblioteca"
               sequence="10"
+              groups="library.library_group_reader"
               web_icon="library,static/description/icon.png"/>
 
     <!-- Catálogo -->

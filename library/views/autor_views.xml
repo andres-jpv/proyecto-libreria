@@ -74,7 +74,7 @@
                 <separator/>
                 <filter name="archivados" string="Archivados"
                         domain="[('active', '=', False)]"/>
-                <group expand="0" string="Agrupar por">
+                <group>
                     <filter name="group_nacionalidad" string="Nacionalidad"
                             context="{'group_by': 'nacionalidad'}"/>
                 </group>

@@ -1,9 +1,9 @@
 {
     'name': 'Library Management',
-    'version': '18.0.1.0.0',
+    'version': '19.0.1.0.0',
     'summary': 'Gestión de biblioteca: libros, autores, categorías y préstamos',
     'description': """
-        Módulo de gestión de biblioteca para Odoo 18.
+        Módulo de gestión de biblioteca para Odoo 19.
         Funcionalidades:
         - Gestión de libros con ISBN, portada y descripción
         - Catálogo de autores con biografía
