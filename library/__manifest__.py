@@ -16,6 +16,7 @@
     'category': 'Services/Library',
     'depends': ['base', 'mail'],
     'data': [
+        'data/ir_cron.xml',
         'security/groups.xml',
         'security/ir.model.access.csv',
         'security/record_rules.xml',

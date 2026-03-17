@@ -22,6 +22,7 @@ class LibraryAutor(models.Model):
     )
     active = fields.Boolean(string='Activo', default=True)
 
+    @api.depends('libro_ids')
     def _compute_libro_count(self):
         for record in self:
             record.libro_count = len(record.libro_ids)

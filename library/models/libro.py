@@ -64,11 +64,11 @@ class LibraryLibro(models.Model):
     def _compute_cantidad_disponible(self):
         for record in self:
             prestamos_activos = record.prestamo_ids.filtered(
-                lambda p: p.estado == 'prestado'
+                lambda p: p.estado in ('prestado', 'vencido')
             )
             record.cantidad_disponible = record.cantidad_total - len(prestamos_activos)
 
-    @api.depends('cantidad_disponible')
+    @api.depends('cantidad_disponible', 'cantidad_total')
     def _compute_estado(self):
         for record in self:
             if record.cantidad_disponible > 0:
@@ -81,10 +81,12 @@ class LibraryLibro(models.Model):
     @api.constrains('isbn')
     def _check_isbn(self):
         for record in self:
-            if record.isbn and len(record.isbn.replace('-', '')) not in (10, 13):
-                raise ValidationError(
-                    'El ISBN debe tener 10 o 13 dígitos.'
-                )
+            if record.isbn:
+                clean = record.isbn.replace('-', '')
+                if not clean.isdigit() or len(clean) not in (10, 13):
+                    raise ValidationError(
+                        'El ISBN debe tener 10 o 13 dígitos numéricos.'
+                    )
 
     @api.model
     def get_estadisticas_por_categoria(self):
